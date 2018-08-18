@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <title>Example Template</title>
+  </head>
+  <body>
+    <h1>Hello, {{ name }}</h1>
+    <p>This is an example jinja2 template</p>
+
+    <h3>Dict handling</h3>
+    <p>Items:</p>
+    <ul>
+      {% for key, value in some_dict.items() %}
+      <li>{{ key }}: {{ value }}</li>
+      {% endfor %}
+    </ul>
+
+    <p>Keys:</p>
+    <ul>
+      {% for key in some_dict.keys() %}
+      <li>{{ key }}</li>
+      {% endfor %}
+    </ul>
+
+    <p>Values:</p>
+    <ul>
+      {% for value in some_dict.values() %}
+      <li>{{ value }}</li>
+      {% endfor %}
+    </ul>
+
+
+    <h3>List handling</h3>
+    <p>Items:</p>
+    <ul>
+      {% for item in some_list %}
+      <li>{{ item }}</li>
+      {% endfor %}
+    </ul>
+
+    <p>First item: {{ some_list[0] }}
+
+
+    <h3>Object handling</h3>
+    <p>Some attribute: {{ some_obj.some_attr }}</p>
+
+
+    <h3>Callable handling</h3>
+    <p>{{ some_callable('arg1', 'arg2', kwarg_1='kwarg_1') }}</p>
+
+
+  </body>
+</html>
