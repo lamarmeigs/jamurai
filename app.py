@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from wsgiref import simple_server
 
 import falcon
