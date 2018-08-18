@@ -4,6 +4,8 @@ import falcon
 from jinja2 import Environment, FileSystemLoader
 from jinja2.exceptions import TemplateNotFound
 
+from utils import UndefinedVariable
+
 
 TEMPLATES_DIRECTORY = 'templates'
 
@@ -13,6 +15,7 @@ class RenderTemplateResponder:
         super().__init__(*args, **kwargs)
         self.jinja_env = Environment(
             loader=FileSystemLoader(TEMPLATES_DIRECTORY),
+            undefined=UndefinedVariable,
         )
 
     def on_get(self, req, resp, template_name):
