@@ -1,11 +1,12 @@
 #!/usr/bin/env python
+import json
 from wsgiref import simple_server
 
 import falcon
 from jinja2 import Environment, FileSystemLoader
 from jinja2.exceptions import TemplateNotFound
 
-from utils import UndefinedVariable
+from utils import JSONParamConsolidationMiddleware, UndefinedVariable
 
 
 TEMPLATES_DIRECTORY = 'templates'
@@ -27,13 +28,18 @@ class RenderTemplateResponder:
                 title='Template not found',
                 description='No such template: "{}"'.format(template_name)
             )
-        # TODO: gather variables from req.params
-        variables = {}
+        try:
+            variables = json.loads(req.params.get('content', '{}'))
+        except json.JSONDecodeError:
+            raise falcon.HTTPBadRequest(
+                title='Failed to decode "content" parameter',
+                description='Value of query parameter "content" is not JSON deserializable'
+            )
         resp.body = template.render(**variables)
         resp.status = falcon.HTTP_OK
 
 
-app = falcon.API()
+app = falcon.API(middleware=JSONParamConsolidationMiddleware())
 app.add_route('/{template_name}', RenderTemplateResponder())
 
 

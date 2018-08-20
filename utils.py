@@ -59,3 +59,11 @@ class UndefinedVariable(jinja2.Undefined):
             separator = ''
 
         return '{}{}{}'.format(parent_name, separator, self._name)
+
+
+class JSONParamConsolidationMiddleware(object):
+    """Middleware class to rejoin incorrectly-split request JSON parameters"""
+    def process_resource(self, req, resp, resource, params):
+        for key, value in req.params.items():
+            if isinstance(value, list) and value[0].startswith(('{', '[')):
+                req.params[key] = ','.join(value)
